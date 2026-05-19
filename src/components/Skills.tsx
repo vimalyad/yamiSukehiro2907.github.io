@@ -3,12 +3,17 @@ import {useInView} from "framer-motion";
 import {useRef} from "react";
 import {BrainCircuit, Cloud, Code2, Database, GitBranch, MonitorSmartphone, Server, ShieldCheck} from "lucide-react";
 
-const mapWidth = 640;
-const mapHeight = 360;
+const mapWidth = 760;
+const mapHeight = 440;
 const centerX = mapWidth / 2;
 const centerY = mapHeight / 2;
-const skillNodeWidth = 144;
 const skillNodeHeight = 46;
+const skillCircleRadius = 172;
+
+const getSkillNodeWidth = (skill: string) => {
+    const baseWidth = skill.length * 8 + 42;
+    return Math.min(Math.max(baseWidth, 104), 180);
+};
 
 const getCirclePositions = (count: number, radius: number) =>
     Array.from({length: count}, (_, index) => {
@@ -28,7 +33,7 @@ type SkillCategory = {
 
 const SkillNetwork = ({category}: {category: SkillCategory}) => {
     const Icon = category.icon;
-    const positions = getCirclePositions(category.skills.length, 132);
+    const positions = getCirclePositions(category.skills.length, skillCircleRadius);
 
     return (
         <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[21rem]">
@@ -60,21 +65,25 @@ const SkillNetwork = ({category}: {category: SkillCategory}) => {
             </div>
 
             <div className="flex flex-wrap justify-center gap-2 lg:block">
-                {category.skills.map((skill, skillIndex) => (
-                    <div
-                        key={skill}
-                        style={{
-                            left: `${(positions[skillIndex].x / mapWidth) * 100}%`,
-                            top: `${(positions[skillIndex].y / mapHeight) * 100}%`,
-                            width: skillNodeWidth,
-                            height: skillNodeHeight,
-                            transform: "translate(-50%, -50%)",
-                        }}
-                        className="overflow-hidden rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold leading-tight text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground lg:absolute lg:flex lg:items-center lg:justify-center"
-                    >
-                        <span className="max-w-full break-words">{skill}</span>
-                    </div>
-                ))}
+                {category.skills.map((skill, skillIndex) => {
+                    const nodeWidth = getSkillNodeWidth(skill);
+
+                    return (
+                        <div
+                            key={skill}
+                            style={{
+                                left: `${(positions[skillIndex].x / mapWidth) * 100}%`,
+                                top: `${(positions[skillIndex].y / mapHeight) * 100}%`,
+                                width: nodeWidth,
+                                height: skillNodeHeight,
+                                transform: "translate(-50%, -50%)",
+                            }}
+                            className="overflow-hidden rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold leading-tight text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground lg:absolute lg:flex lg:items-center lg:justify-center"
+                        >
+                            <span className="max-w-full whitespace-normal break-words">{skill}</span>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
@@ -158,7 +167,7 @@ const Skills = () => {
                                     initial={{opacity: 0, y: 30}}
                                     animate={isInView ? {opacity: 1, y: 0} : {}}
                                     transition={{duration: 0.6, delay: index * 0.07}}
-                                    className="relative min-h-[24rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5"
+                                    className="relative min-h-[28rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5"
                                 >
                                     <SkillNetwork category={category}/>
                                 </motion.div>
