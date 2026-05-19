@@ -2,7 +2,7 @@ import image from "@/assets/photo.jpg";
 import {motion, useMotionValue, useTransform} from "framer-motion";
 import {useInView} from "framer-motion";
 import {useRef} from "react";
-import {GitBranch, Rocket, ShieldCheck, Workflow} from "lucide-react";
+import {GitBranch, Rocket, ShieldCheck} from "lucide-react";
 
 const flow = [
     "Problem",
@@ -14,15 +14,15 @@ const flow = [
 ];
 
 const nodePositions = [
-    {left: 18, top: 96},
-    {left: 144, top: 34},
-    {left: 286, top: 110},
-    {left: 426, top: 52},
-    {left: 568, top: 128},
-    {left: 710, top: 68},
+    {left: 36, top: 132},
+    {left: 190, top: 58},
+    {left: 354, top: 150},
+    {left: 520, top: 72},
+    {left: 686, top: 152},
+    {left: 836, top: 84},
 ];
 
-const nodeWidth = 126;
+const nodeWidth = 118;
 const nodeHeight = 70;
 
 type FlowNodeMotion = {
@@ -70,8 +70,8 @@ const BuildFlowMap = () => {
 
     return (
         <>
-            <div ref={constraintsRef} className="relative hidden h-64 overflow-hidden rounded-lg border border-primary/20 bg-card/40 shadow-inner shadow-primary/5 md:block">
-                <motion.svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 860 256" preserveAspectRatio="none">
+            <div ref={constraintsRef} className="relative mx-auto hidden h-72 max-w-5xl lg:block">
+                <motion.svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 980 288" preserveAspectRatio="none">
                     {edgePoints.slice(0, -1).map((point, index) => (
                         <motion.line
                             key={`${flow[index]}-${flow[index + 1]}`}
@@ -104,7 +104,7 @@ const BuildFlowMap = () => {
                             height: nodeHeight,
                         }}
                         whileDrag={{scale: 1.04, zIndex: 20}}
-                        className="absolute cursor-grab rounded-lg border border-primary/30 bg-background/95 px-3 py-3 text-left text-sm font-semibold shadow-xl shadow-primary/10 transition-colors active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="absolute cursor-grab rounded-lg border border-primary/35 bg-background/90 px-3 py-3 text-left text-sm font-semibold shadow-2xl shadow-primary/15 backdrop-blur transition-colors hover:border-primary/70 active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         aria-label={`Drag build flow node ${step}`}
                     >
                         <span className="block text-xs font-bold text-primary">{String(index + 1).padStart(2, "0")}</span>
@@ -113,7 +113,7 @@ const BuildFlowMap = () => {
                 ))}
             </div>
 
-            <div className="grid gap-3 md:hidden">
+            <div className="grid gap-3 lg:hidden">
                 {flow.map((step, index) => (
                     <div key={step} className="relative rounded-md border border-border bg-card px-3 py-3 text-sm font-semibold">
                         <span className="mr-2 text-primary">{String(index + 1).padStart(2, "0")}</span>
@@ -244,20 +244,21 @@ const About = () => {
                                 })}
                             </div>
 
-                            <div className="mt-6 rounded-lg border border-primary/20 bg-background/70 p-5">
-                                <div className="mb-5 flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
-                                        <Workflow size={20}/>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-semibold text-primary">Build Flow</p>
-                                        <p className="text-sm text-muted-foreground">How I usually turn ambiguity into shipped systems</p>
-                                    </div>
-                                </div>
-                                <BuildFlowMap/>
-                            </div>
                         </motion.div>
                     </div>
+
+                    <motion.div
+                        initial={{opacity: 0, y: 32}}
+                        animate={isInView ? {opacity: 1, y: 0} : {}}
+                        transition={{duration: 0.6, delay: 0.2}}
+                        className="mt-12"
+                    >
+                        <div className="mb-3 text-center">
+                            <p className="text-sm font-semibold text-primary">Build Flow</p>
+                            <p className="text-sm text-muted-foreground">How I usually turn ambiguity into shipped systems</p>
+                        </div>
+                        <BuildFlowMap/>
+                    </motion.div>
                 </motion.div>
             </div>
         </section>

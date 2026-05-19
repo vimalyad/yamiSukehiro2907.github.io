@@ -44,7 +44,7 @@ const Index = () => {
   return (
     <div className="relative min-h-screen overflow-hidden">
       <SystemBackdrop />
-      <Navigation onCommandOpen={() => setCommandOpen(true)} />
+      <Navigation />
       {commandOpen && (
         <Suspense fallback={null}>
           <CommandPalette open={commandOpen} onOpenChange={setCommandOpen} />
