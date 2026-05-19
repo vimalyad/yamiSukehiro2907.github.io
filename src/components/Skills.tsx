@@ -1,24 +1,139 @@
-import {motion} from "framer-motion";
+import {motion, useMotionValue, useTransform} from "framer-motion";
 import {useInView} from "framer-motion";
 import {useRef} from "react";
 import {BrainCircuit, Cloud, Code2, Database, GitBranch, MonitorSmartphone, Server, ShieldCheck} from "lucide-react";
+
+const mapWidth = 640;
+const mapHeight = 360;
+const centerX = mapWidth / 2;
+const centerY = mapHeight / 2;
+const skillNodeWidth = 132;
+const skillNodeHeight = 42;
+
+const getCirclePositions = (count: number, radius: number) =>
+    Array.from({length: count}, (_, index) => {
+        const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
+
+        return {
+            x: centerX + Math.cos(angle) * radius,
+            y: centerY + Math.sin(angle) * radius,
+        };
+    });
+
+const useNodeMotion = () => ({
+    x: useMotionValue(0),
+    y: useMotionValue(0),
+});
+
+type NodeMotion = ReturnType<typeof useNodeMotion>;
+
+const useNodePoint = (
+    node: NodeMotion,
+    position: {x: number; y: number},
+    width: number,
+    height: number,
+) => ({
+    x: useTransform(node.x, (value) => position.x + width / 2 + value),
+    y: useTransform(node.y, (value) => position.y + height / 2 + value),
+});
+
+type SkillCategory = {
+    title: string;
+    icon: typeof Code2;
+    skills: string[];
+};
+
+const SkillNetwork = ({category}: {category: SkillCategory}) => {
+    const Icon = category.icon;
+    const constraintsRef = useRef<HTMLDivElement>(null);
+    const positions = getCirclePositions(category.skills.length, 134).map((position) => ({
+        x: position.x - skillNodeWidth / 2,
+        y: position.y - skillNodeHeight / 2,
+    }));
+    const nodes = [
+        useNodeMotion(),
+        useNodeMotion(),
+        useNodeMotion(),
+        useNodeMotion(),
+        useNodeMotion(),
+        useNodeMotion(),
+        useNodeMotion(),
+        useNodeMotion(),
+    ];
+    const fallbackPosition = {x: centerX - skillNodeWidth / 2, y: centerY - skillNodeHeight / 2};
+    const edgePoints = [
+        useNodePoint(nodes[0], positions[0] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[1], positions[1] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[2], positions[2] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[3], positions[3] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[4], positions[4] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[5], positions[5] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[6], positions[6] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+        useNodePoint(nodes[7], positions[7] ?? fallbackPosition, skillNodeWidth, skillNodeHeight),
+    ];
+
+    return (
+        <div ref={constraintsRef} className="relative z-10 flex flex-col gap-4 lg:block lg:h-[21rem]">
+            <div className="pointer-events-none absolute inset-0 hidden lg:block">
+                <motion.svg className="h-full w-full overflow-visible" viewBox={`0 0 ${mapWidth} ${mapHeight}`} preserveAspectRatio="none">
+                    <circle cx={centerX} cy={centerY} r="134" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="7 12" fill="none" opacity="0.26"/>
+                    {category.skills.map((skill, skillIndex) => (
+                        <motion.line
+                            key={skill}
+                            x1={centerX}
+                            y1={centerY}
+                            x2={edgePoints[skillIndex].x}
+                            y2={edgePoints[skillIndex].y}
+                            stroke="hsl(var(--primary))"
+                            strokeWidth="1.6"
+                            strokeDasharray="6 10"
+                            opacity="0.42"
+                        />
+                    ))}
+                </motion.svg>
+            </div>
+
+            <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-center shadow-xl shadow-primary/10 lg:absolute lg:left-1/2 lg:top-1/2 lg:z-10 lg:-translate-x-1/2 lg:-translate-y-1/2">
+                <div>
+                    <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <Icon size={22}/>
+                    </div>
+                    <p className="px-3 text-lg font-bold leading-tight">{category.title}</p>
+                </div>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-2 lg:block">
+                {category.skills.map((skill, skillIndex) => (
+                    <motion.div
+                        key={skill}
+                        drag
+                        dragMomentum={false}
+                        dragElastic={0.08}
+                        dragConstraints={constraintsRef}
+                        style={{
+                            x: nodes[skillIndex].x,
+                            y: nodes[skillIndex].y,
+                            left: positions[skillIndex].x,
+                            top: positions[skillIndex].y,
+                            width: skillNodeWidth,
+                            height: skillNodeHeight,
+                        }}
+                        whileDrag={{scale: 1.05, zIndex: 20}}
+                        className="cursor-grab rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground active:cursor-grabbing lg:absolute lg:flex lg:items-center lg:justify-center"
+                    >
+                        {skill}
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    );
+};
 
 const Skills = () => {
     const ref = useRef(null);
     const isInView = useInView(ref, {once: true});
 
-    const nodeSlots = [
-        "lg:left-[7%] lg:top-[18%]",
-        "lg:left-1/2 lg:top-[6%] lg:-translate-x-1/2",
-        "lg:right-[7%] lg:top-[18%]",
-        "lg:left-[4%] lg:top-1/2 lg:-translate-y-1/2",
-        "lg:right-[4%] lg:top-1/2 lg:-translate-y-1/2",
-        "lg:left-[9%] lg:bottom-[14%]",
-        "lg:left-1/2 lg:bottom-[6%] lg:-translate-x-1/2",
-        "lg:right-[9%] lg:bottom-[14%]",
-    ];
-
-    const skillCategories = [
+    const skillCategories: SkillCategory[] = [
         {
             title: "Programming",
             icon: Code2,
@@ -86,8 +201,6 @@ const Skills = () => {
 
                     <div className="grid gap-8 xl:grid-cols-2">
                         {skillCategories.map((category, index) => {
-                            const Icon = category.icon;
-
                             return (
                                 <motion.div
                                     key={category.title}
@@ -96,60 +209,7 @@ const Skills = () => {
                                     transition={{duration: 0.6, delay: index * 0.07}}
                                     className="relative min-h-[24rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5"
                                 >
-                                    <div className="pointer-events-none absolute inset-0 hidden lg:block">
-                                        <svg className="h-full w-full" viewBox="0 0 640 360" preserveAspectRatio="none">
-                                            <circle cx="320" cy="180" r="92" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="7 12" fill="none" opacity="0.24"/>
-                                            {category.skills.map((skill, skillIndex) => {
-                                                const points = [
-                                                    [118, 82],
-                                                    [320, 42],
-                                                    [522, 82],
-                                                    [86, 180],
-                                                    [554, 180],
-                                                    [128, 282],
-                                                    [320, 318],
-                                                    [512, 282],
-                                                ][skillIndex];
-
-                                                if (!points) {
-                                                    return null;
-                                                }
-
-                                                return (
-                                                    <path
-                                                        key={skill}
-                                                        d={`M320 180 L${points[0]} ${points[1]}`}
-                                                        stroke="hsl(var(--primary))"
-                                                        strokeWidth="1.5"
-                                                        strokeDasharray="6 10"
-                                                        opacity="0.35"
-                                                    />
-                                                );
-                                            })}
-                                        </svg>
-                                    </div>
-
-                                    <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[21rem]">
-                                        <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-center shadow-xl shadow-primary/10 lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
-                                            <div>
-                                                <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                                                    <Icon size={22}/>
-                                                </div>
-                                                <p className="px-3 text-lg font-bold leading-tight">{category.title}</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-wrap justify-center gap-2 lg:block">
-                                            {category.skills.map((skill, skillIndex) => (
-                                                <div
-                                                    key={skill}
-                                                    className={`rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground lg:absolute lg:w-36 ${nodeSlots[skillIndex]}`}
-                                                >
-                                                    {skill}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                    <SkillNetwork category={category}/>
                                 </motion.div>
                             );
                         })}

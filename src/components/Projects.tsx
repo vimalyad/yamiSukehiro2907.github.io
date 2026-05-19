@@ -1,11 +1,45 @@
-import {motion} from "framer-motion";
+import {motion, useMotionValue, useTransform} from "framer-motion";
 import {useInView} from "framer-motion";
 import {useRef, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {BrainCircuit, Cpu, DatabaseZap, ExternalLink, Github, Network, RadioTower} from "lucide-react";
 
+const projectMapWidth = 1000;
+const projectMapHeight = 560;
+const projectCenterX = projectMapWidth / 2;
+const projectCenterY = projectMapHeight / 2;
+const projectNodeWidth = 240;
+const projectNodeHeight = 82;
+
+const getProjectPositions = (count: number) =>
+    Array.from({length: count}, (_, index) => {
+        const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
+        const radius = 212;
+
+        return {
+            x: projectCenterX + Math.cos(angle) * radius - projectNodeWidth / 2,
+            y: projectCenterY + Math.sin(angle) * radius - projectNodeHeight / 2,
+        };
+    });
+
+const useProjectNodeMotion = () => ({
+    x: useMotionValue(0),
+    y: useMotionValue(0),
+});
+
+type ProjectNodeMotion = ReturnType<typeof useProjectNodeMotion>;
+
+const useProjectNodePoint = (
+    node: ProjectNodeMotion,
+    position: {x: number; y: number},
+) => ({
+    x: useTransform(node.x, (value) => position.x + projectNodeWidth / 2 + value),
+    y: useTransform(node.y, (value) => position.y + projectNodeHeight / 2 + value),
+});
+
 const Projects = () => {
     const ref = useRef(null);
+    const mapConstraintsRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, {once: true});
     const [selectedProjectId, setSelectedProjectId] = useState("namora");
 
@@ -106,12 +140,20 @@ const Projects = () => {
 
     const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
     const SelectedIcon = selectedProject.icon;
-    const nodePositions = [
-        "lg:left-[7%] lg:top-[16%]",
-        "lg:left-[11%] lg:bottom-[12%]",
-        "lg:left-1/2 lg:top-[5%] lg:-translate-x-1/2",
-        "lg:right-[7%] lg:top-[16%]",
-        "lg:right-[11%] lg:bottom-[12%]",
+    const nodePositions = getProjectPositions(projects.length);
+    const projectNodes = [
+        useProjectNodeMotion(),
+        useProjectNodeMotion(),
+        useProjectNodeMotion(),
+        useProjectNodeMotion(),
+        useProjectNodeMotion(),
+    ];
+    const edgePoints = [
+        useProjectNodePoint(projectNodes[0], nodePositions[0]),
+        useProjectNodePoint(projectNodes[1], nodePositions[1]),
+        useProjectNodePoint(projectNodes[2], nodePositions[2]),
+        useProjectNodePoint(projectNodes[3], nodePositions[3]),
+        useProjectNodePoint(projectNodes[4], nodePositions[4]),
     ];
 
     return (
@@ -132,17 +174,25 @@ const Projects = () => {
                     <div className="mx-auto max-w-7xl">
                         <div className="relative min-h-[42rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5 lg:min-h-[36rem]">
                                 <div className="pointer-events-none absolute inset-0 hidden lg:block">
-                                    <svg className="h-full w-full" viewBox="0 0 1000 560" preserveAspectRatio="none">
+                                    <motion.svg className="h-full w-full overflow-visible" viewBox={`0 0 ${projectMapWidth} ${projectMapHeight}`} preserveAspectRatio="none">
                                         <circle cx="500" cy="280" r="168" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="7 12" fill="none" opacity="0.28"/>
-                                        <path d="M500 280 L175 132" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
-                                        <path d="M500 280 L205 434" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
-                                        <path d="M500 280 L500 84" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
-                                        <path d="M500 280 L825 132" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
-                                        <path d="M500 280 L795 434" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
-                                    </svg>
+                                        {projects.map((project, index) => (
+                                            <motion.line
+                                                key={project.id}
+                                                x1={projectCenterX}
+                                                y1={projectCenterY}
+                                                x2={edgePoints[index].x}
+                                                y2={edgePoints[index].y}
+                                                stroke="hsl(var(--primary))"
+                                                strokeWidth="2"
+                                                strokeDasharray="8 10"
+                                                opacity="0.48"
+                                            />
+                                        ))}
+                                    </motion.svg>
                                 </div>
 
-                                <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[32rem]">
+                                <div ref={mapConstraintsRef} className="relative z-10 flex flex-col gap-4 lg:block lg:h-[32rem]">
                                     <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-full border border-primary/40 bg-primary/10 p-6 text-center shadow-2xl shadow-primary/10 lg:absolute lg:left-1/2 lg:top-1/2 lg:h-48 lg:w-48 lg:-translate-x-1/2 lg:-translate-y-1/2">
                                         <div>
                                             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
@@ -157,11 +207,24 @@ const Projects = () => {
                                         const isSelected = selectedProjectId === project.id;
 
                                         return (
-                                            <button
+                                            <motion.button
                                                 key={project.id}
                                                 type="button"
+                                                drag
+                                                dragMomentum={false}
+                                                dragElastic={0.08}
+                                                dragConstraints={mapConstraintsRef}
                                                 onClick={() => setSelectedProjectId(project.id)}
-                                                className={`group rounded-lg border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute lg:w-60 ${nodePositions[index]} ${
+                                                style={{
+                                                    x: projectNodes[index].x,
+                                                    y: projectNodes[index].y,
+                                                    left: nodePositions[index].x,
+                                                    top: nodePositions[index].y,
+                                                    width: projectNodeWidth,
+                                                    minHeight: projectNodeHeight,
+                                                }}
+                                                whileDrag={{scale: 1.04, zIndex: 20}}
+                                                className={`group cursor-grab rounded-lg border p-4 text-left transition-all active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute ${
                                                     isSelected
                                                         ? "border-primary bg-primary text-primary-foreground shadow-xl shadow-primary/20"
                                                         : "border-border bg-card/95 hover:border-primary/70 hover:bg-secondary"
@@ -182,7 +245,7 @@ const Projects = () => {
                                                         </p>
                                                     </div>
                                                 </div>
-                                            </button>
+                                            </motion.button>
                                         );
                                     })}
                                 </div>
