@@ -116,29 +116,21 @@ const Projects = () => {
 
     return (
         <section id="projects" className="py-24 overflow-hidden">
-            <div className="px-6 lg:px-10">
-                <motion.div
-                    ref={ref}
-                    initial={{opacity: 0, y: 50}}
-                    animate={isInView ? {opacity: 1, y: 0} : {}}
-                    transition={{duration: 0.6}}
-                >
+            <motion.div
+                ref={ref}
+                initial={{opacity: 0, y: 50}}
+                animate={isInView ? {opacity: 1, y: 0} : {}}
+                transition={{duration: 0.6}}
+            >
+                <div className="container mx-auto px-6">
                     <h2 className="text-4xl md:text-5xl font-bold mb-12">
                         Featured <span className="text-gradient">Projects</span>
                     </h2>
+                </div>
 
-                    <div className="mb-8 flex max-w-5xl flex-col gap-3">
-                        <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                            Interactive System Map
-                        </p>
-                        <h3 className="text-2xl font-bold md:text-3xl">
-                            A centered view of the systems behind the work
-                        </h3>
-                    </div>
-
-                    <div className="relative -mx-6 border-y border-border bg-card/35 px-6 py-8 lg:-mx-10 lg:px-10">
-                        <div className="mx-auto max-w-7xl">
-                            <div className="relative min-h-[42rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5 lg:min-h-[36rem]">
+                <div className="relative border-y border-border bg-card/35 px-6 py-8 lg:px-10">
+                    <div className="mx-auto max-w-7xl">
+                        <div className="relative min-h-[42rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5 lg:min-h-[36rem]">
                                 <div className="pointer-events-none absolute inset-0 hidden lg:block">
                                     <svg className="h-full w-full" viewBox="0 0 1000 560" preserveAspectRatio="none">
                                         <circle cx="500" cy="280" r="168" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="7 12" fill="none" opacity="0.28"/>
@@ -156,7 +148,6 @@ const Projects = () => {
                                             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
                                                 <Network size={26}/>
                                             </div>
-                                            <p className="text-sm font-semibold uppercase tracking-wider text-primary">Systems Lab</p>
                                             <p className="mt-1 text-3xl font-bold">Projects</p>
                                         </div>
                                     </div>
@@ -256,9 +247,8 @@ const Projects = () => {
                                 </div>
                             </motion.div>
                         </div>
-                    </div>
-                </motion.div>
-            </div>
+                </div>
+            </motion.div>
         </section>
     );
 };
