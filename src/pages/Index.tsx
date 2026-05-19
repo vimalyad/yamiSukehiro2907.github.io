@@ -5,6 +5,7 @@ import Education from "@/components/Education";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
+import SystemBackdrop from "@/components/SystemBackdrop";
 import {lazy, Suspense, useEffect, useState} from "react";
 
 const CommandPalette = lazy(() => import("@/components/CommandPalette"));
@@ -41,20 +42,23 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen overflow-hidden">
+      <SystemBackdrop />
       <Navigation onCommandOpen={() => setCommandOpen(true)} />
       {commandOpen && (
         <Suspense fallback={null}>
           <CommandPalette open={commandOpen} onOpenChange={setCommandOpen} />
         </Suspense>
       )}
-      <Hero />
-      <About />
-      <Education />
-      <Experience />
-      <Projects />
-      <Skills />
-      <footer className="bg-card/50 border-t border-border py-8">
+      <main className="relative z-10">
+        <Hero />
+        <About />
+        <Education />
+        <Experience />
+        <Projects />
+        <Skills />
+      </main>
+      <footer className="relative z-10 bg-card/50 border-t border-border py-8">
         <div className="container mx-auto px-6 text-center text-muted-foreground">
           <p>© 2025 Vimal Kumar Yadav. All rights reserved.</p>
         </div>
