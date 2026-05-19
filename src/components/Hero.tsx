@@ -1,11 +1,11 @@
 import {motion} from "framer-motion";
 import {Github, Linkedin, Mail, Phone, ChevronDown} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import keyboardHero from "@/assets/keyboard-hero.jpg";
+import developerHero from "@/assets/developer-hero.png";
 
 const Hero = () => {
     const socialLinks = [
-        {icon: Github, href: "https://github.com/yamiSukehiro2907", label: "GitHub"},
+        {icon: Github, href: "https://github.com/vimalyad", label: "GitHub"},
         {icon: Linkedin, href: "https://www.linkedin.com/in/vimal-kumar-yadav-58a7a5316/", label: "LinkedIn"},
         {icon: Mail, href: "mailto:vimalyadavkr001@gmail.com", label: "Email"},
         {icon: Phone, href: "tel:+918604732097", label: "Phone"},
@@ -21,14 +21,14 @@ const Hero = () => {
                         transition={{duration: 0.6}}
                     >
                         <p className="text-primary text-sm uppercase tracking-wider mb-4 font-semibold">
-                            Backend Engineer • Full Stack Developer
+                            Backend Engineer • Systems Builder • Full Stack Developer
                         </p>
                         <h1 className="text-5xl md:text-7xl font-bold mb-6">
                             Vimal Kumar Yadav
                         </h1>
                         <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                            Backend engineer specializing in Spring Boot and MERN stack. Building scalable,
-                            production-ready systems.
+                            Backend engineer building production systems from 0 to 1 across microservices,
+                            real-time collaboration, event-driven workflows, and automation-heavy product teams.
                         </p>
 
                         <div className="flex gap-4 mb-8">
@@ -65,9 +65,9 @@ const Hero = () => {
                         className="relative"
                     >
                         <img
-                            src={keyboardHero}
-                            alt="3D Keyboard"
-                            className="w-full h-auto animate-float"
+                            src={developerHero}
+                            alt="Developer workstation with code, architecture diagrams, and backend systems"
+                            className="w-full h-auto rounded-lg"
                         />
                     </motion.div>
                 </div>

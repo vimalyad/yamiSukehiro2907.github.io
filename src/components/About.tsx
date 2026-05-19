@@ -32,15 +32,16 @@ const About = () => {
                             className="space-y-5"
                         >
                             <p className="text-xl text-muted-foreground leading-relaxed font-medium">
-                                Backend engineer specializing in building production-grade systems using Spring Boot
-                                and the MERN stack. Skilled at designing scalable APIs, real-time features, secure
-                                authentication flows, and optimized cloud deployments.
+                                I build backend-heavy products that move from idea to production: Spring Boot
+                                microservices, secure APIs, real-time collaboration flows, event-driven pipelines,
+                                and automation that removes operational drag from engineering teams.
                             </p>
 
                             <p className="text-xl text-muted-foreground leading-relaxed font-medium">
-                                Known for fast adaptability, clean engineering mindset, and writing maintainable,
-                                scalable codebases. Currently enhancing my expertise in infrastructure design,
-                                cloud-native workflows, and high-performance backend architectures.
+                                My recent work spans school-facing products, SaaS QA automation at Neeto,
+                                food-delivery architecture with Kafka and Redis, AI document workflows, and
+                                systems projects in Rust and C++. I care about clean interfaces, measurable
+                                performance, and codebases that remain easy to extend after the first launch.
                             </p>
                         </motion.div>
 

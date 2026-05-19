@@ -18,8 +18,8 @@ const Contact = () => {
   ];
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com/yamiSukehiro2907", label: "GitHub" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/vimalyadavkr", label: "LinkedIn" },
+    { icon: Github, href: "https://github.com/vimalyad", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/vimal-kumar-yadav-58a7a5316/", label: "LinkedIn" },
     { icon: FileText, href: "/resume.pdf", label: "Resume" },
   ];
 

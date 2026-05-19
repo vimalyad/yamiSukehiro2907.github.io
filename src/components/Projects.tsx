@@ -11,44 +11,70 @@ const Projects = () => {
 
     const projects = [
         {
-            period: "Nov 2024 – Apr 2025",
-            title: "Bricks Learning Management System",
-            tech: "Spring Boot • Java • Maven • MySQL • React Native",
+            period: "May 2026",
+            title: "NitroSense Linux",
+            tech: "Rust • Linux hwmon • GTK • Polkit • GitHub Releases",
             description: [
-                "Production-ready LMS for schools and coaching centers",
-                "RESTful APIs with Spring Security and JWT authentication",
-                "Normalized MySQL database schema",
+                "Built a Linux desktop app for monitoring temperatures and controlling fan and power behavior",
+                "Integrated hardware-aware flows for Acer Nitro systems with thermal graphs, notifications, and desktop packaging",
+                "Published versioned release artifacts with checksums and contributor-facing documentation",
             ],
             links: {
-                github: "https://github.com/yamiSukehiro2907/Bricks-Ai-LMS",
-                demo: "https://bricks.org.in",
+                github: "https://github.com/vimalyad/nitrosense",
             },
         },
         {
-            period: "Aug 2025 – Oct 2025",
-            title: "Studi.io - Real-Time Collaborative Platform",
-            tech: "MERN • Socket.IO • Fabric.js • Redux Toolkit • Cloudinary",
+            period: "Resume Project",
+            title: "Namora Food Delivery Platform",
+            tech: "Spring Boot • Kafka • Redis GEO • Eureka • API Gateway • JWT",
             description: [
-                "Real-time chat and interactive whiteboard",
-                "Deployed on Render, Netlify, MongoDB Atlas",
-                "Solved CORS and httpOnly cookie authentication",
+                "Architected 8 Spring Boot microservices with service discovery and centralized gateway routing",
+                "Moved order dispatch to Kafka events so rider assignment failures do not block order confirmation",
+                "Modelled rider locations with Redis GEO and load-tested 40 endpoints with JMeter",
             ],
             links: {
-                github: "https://github.com/yamiSukehiro2907/studi.io",
+                github: "https://github.com/vimalyad/namora-monolith",
+            },
+        },
+        {
+            period: "Oct 2025 – Nov 2025",
+            title: "Studi.io - Real-Time Collaborative Study Platform",
+            tech: "TypeScript • React • Spring Boot • Socket.IO • MongoDB • Cloudinary",
+            description: [
+                "Built live study rooms with room-scoped broadcasting, chat, presence, and resource sharing",
+                "Secured sessions with JWT access/refresh rotation, HTTP-only cookies, OTP, and Socket.IO middleware",
+                "Added paginated messaging, upload workflows, Redux Toolkit state, and production deployments",
+            ],
+            links: {
+                github: "https://github.com/vimalyad/studi.io",
                 demo: "https://studiio.netlify.app/",
             },
         },
         {
-            period: "May 2025 – Jun 2025",
-            title: "devStreak - Open-Source Activity Tracker",
-            tech: "Spring Boot • React • Tailwind CSS • PostgreSQL",
+            period: "May 2026",
+            title: "DocBuddy",
+            tech: "TypeScript • RAG • Document Uploads • Full Stack AI",
             description: [
-                "Plugin-based architecture for platform integrations",
-                "Comprehensive developer documentation",
-                "Open-source with community contributions",
+                "Created a production-ready document chat application inspired by NotebookLM",
+                "Enabled users to upload PDFs, TXTs, and CSVs for grounded, context-aware conversations",
+                "Designed the product as a full-stack AI workflow with a polished frontend and API-backed retrieval flow",
             ],
             links: {
-                github: "https://github.com/yamiSukehiro2907/devStreak",
+                github: "https://github.com/vimalyad/doc-buddy",
+                demo: "https://doc-buddy-frontend.vercel.app",
+            },
+        },
+        {
+            period: "May 2026",
+            title: "Anvil - Multi-Writer Relational Database Prototype",
+            tech: "Rust • CRDTs • SQL Engine • Distributed Storage",
+            description: [
+                "Built an embedded relational database prototype where peers write locally and converge through CRDT deltas",
+                "Designed SQLite-like SQL behavior with cell-level merge metadata, tombstones, uniqueness claims, and FK policy handling",
+                "Explored distributed data modelling, conflict resolution, and database internals in Rust",
+            ],
+            links: {
+                github: "https://github.com/vimalyad/udaan-relational-database",
             },
         },
     ];
@@ -66,7 +92,7 @@ const Projects = () => {
                         Featured <span className="text-gradient">Projects</span>
                     </h2>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
                         {projects.map((project, index) => (
                             <motion.div
                                 key={index}

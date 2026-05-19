@@ -10,11 +10,11 @@ const Education = () => {
 
   const education = [
     {
-      period: "Jun 2028",
-      institution: "Scaler School of Technology",
-      degree: "B.Tech, Computer Science and Engineering",
-      details: "GPA: 9.17/10 | Bangalore, Karnataka",
-      coursework: "Data Structures, Algorithms, DBMS, Operating Systems, MERN Stack, Computer Networks, OOP",
+      period: "2024 – 2027",
+      institution: "BITS Pilani",
+      degree: "Bachelor of Science in Computer Science",
+      details: "CGPA: 8.7/10",
+      coursework: "Data Structures, Algorithms, DBMS, Operating Systems, Computer Networks, OOP, Distributed Systems",
     },
     {
       period: "May 2022",

@@ -10,35 +10,35 @@ const Skills = () => {
     const skillCategories = [
         {
             title: "Programming Languages",
-            skills: ["Java", "JavaScript", "TypeScript", "Python"],
+            skills: ["Java", "TypeScript", "JavaScript", "Python", "Rust", "C++"],
         },
         {
             title: "Backend",
-            skills: ["Spring Boot", "Spring MVC", "Spring Security", "Spring Data JPA", "Node.js", "Express.js"],
+            skills: ["Spring Boot", "Spring MVC", "Spring Security", "Spring Data JPA", "Node.js", "Express.js", "REST APIs"],
         },
         {
             title: "Frontend",
-            skills: ["React", "React Router", "Next.js", "HTML", "CSS", "Tailwind CSS", "Bootstrap"],
+            skills: ["React", "Next.js", "Redux Toolkit", "React Router", "Tailwind CSS", "HTML", "CSS"],
         },
         {
             title: "Databases",
-            skills: ["MySQL (Advanced)", "MongoDB", "PostgreSQL"],
+            skills: ["MySQL", "PostgreSQL", "MongoDB", "Redis", "Redis GEO"],
         },
         {
-            title: "APIs & Web",
-            skills: ["RESTful APIs", "WebSocket", "JWT Authentication", "SOAP APIs", "Socket.IO"],
+            title: "Distributed & Real-Time Systems",
+            skills: ["Kafka", "Socket.IO", "WebSocket", "JWT Authentication", "Refresh Token Rotation", "Microservices"],
         },
         {
-            title: "Tools",
-            skills: ["Maven", "Git", "Postman", "OAuth2", "Redux Toolkit", "Mongoose"],
+            title: "Testing & Automation",
+            skills: ["Playwright", "TypeScript Automation", "JMeter", "Postman", "CI/CD", "GitHub Actions"],
         },
         {
             title: "Cloud & DevOps",
-            skills: ["Render", "Netlify", "MongoDB Atlas", "GCP", "CORS Configuration"],
+            skills: ["Docker", "GCP", "Render", "Netlify", "MongoDB Atlas", "Git", "Maven"],
         },
         {
             title: "Concepts",
-            skills: ["OOPS", "DSA", "DBMS", "Operating Systems", "SDLC"],
+            skills: ["System Design", "OOP", "DSA", "DBMS", "Operating Systems", "Computer Networks", "RAG"],
         },
     ];
 

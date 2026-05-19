@@ -10,25 +10,25 @@ const Experience = () => {
 
     const experiences = [
         {
-            period: "Apr 2025 – Sept 2025",
-            title: "Backend Engineer",
-            company: "Bricks Education",
+            period: "Feb 2026 – Apr 2026",
+            title: "SDE Intern",
+            company: "Neeto (BigBinary)",
             location: "Remote",
             responsibilities: [
-                "Developed backend systems using Spring Boot, Java, Maven",
-                "Collaborated with React Native frontend team",
-                "Followed Agile practices and OOP principles",
+                "Expanded automated test coverage across 4 SaaS products using Playwright and TypeScript",
+                "Replaced manual QA on critical user journeys with reliable, repeatable browser automation",
+                "Built NeetoCI pipelines with 4-shard parallel Playwright runs, PR-label triggers, and GitHub/Slack notifications",
             ],
         },
         {
-            period: "Feb 2025 – Mar 2025",
-            title: "Freelance Shopify Developer",
-            company: "Private Client",
-            location: "Remote",
+            period: "Apr 2025 – Sept 2025",
+            title: "Founding Backend Engineer",
+            company: "Bricks Education",
+            location: "Pilani / Remote",
             responsibilities: [
-                "Designed custom Shopify store with responsive layouts",
-                "Coded in Liquid language",
-                "Implemented SEO best practices",
+                "Owned backend development through 3 product pivots: LMS, social platform, and school curriculum platform",
+                "Shipped course delivery, assignment submission, and student-interaction APIs from scratch in Spring Boot",
+                "Supported onboarding for 2 schools in Pilani and iterated directly from live user feedback",
             ],
         },
     ];

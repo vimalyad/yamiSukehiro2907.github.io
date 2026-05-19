@@ -8,7 +8,7 @@
 
 **A modern, responsive portfolio showcasing my journey as a Backend Engineer and Full Stack Developer**
 
-[Live Demo](https://vimalyadavkr.me) · [Report Bug](https://github.com/yamiSukehiro2907/yamiSukehiro2907.github.io/issues) · [Request Feature](https://github.com/yamiSukehiro2907/yamiSukehiro2907.github.io/issues)
+[Live Demo](https://vimalyadavkr.me) · [Report Bug](https://github.com/vimalyad/yamiSukehiro2907.github.io/issues) · [Request Feature](https://github.com/vimalyad/yamiSukehiro2907.github.io/issues)
 
 </div>
 
@@ -33,10 +33,10 @@ This is my personal portfolio website built with modern web technologies. It sho
 
 ### 🌟 Highlights
 
-- **Backend Engineer** specializing in Spring Boot and MERN stack
-- **3+ Featured Projects** including LMS, Real-time collaboration platform, and Activity tracker
-- **Production-Ready** systems with scalable architecture
-- **Full Stack** expertise in both frontend and backend technologies
+- **Backend Engineer** building production systems from 0 to 1
+- **Featured Projects** across Spring Boot microservices, Rust/Linux tooling, real-time collaboration, RAG, and distributed data systems
+- **Production-Ready** experience in authentication, CI/CD, automation, event-driven workflows, and performance testing
+- **Full Stack** execution with a strong backend and systems-design center of gravity
 
 ---
 
@@ -85,7 +85,7 @@ This is my personal portfolio website built with modern web technologies. It sho
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yamiSukehiro2907/yamiSukehiro2907.github.io.git
+   git clone https://github.com/vimalyad/yamiSukehiro2907.github.io.git
    cd yamiSukehiro2907.github.io
    ```
 
@@ -168,7 +168,7 @@ Push to the `main` branch and GitHub Actions will automatically build and deploy
 - Professional introduction
 - Call-to-action buttons
 - Social media links
-- Animated 3D keyboard visual
+- Developer workstation visual with code, architecture diagrams, and backend system flows
 
 ### 👨‍💻 About
 - Professional summary
@@ -177,26 +177,28 @@ Push to the `main` branch and GitHub Actions will automatically build and deploy
 - Profile photo with animations
 
 ### 🎓 Education
-- B.Tech in Computer Science and Engineering
-- Academic achievements
-- Relevant coursework
+- Bachelor of Science in Computer Science at BITS Pilani
+- CGPA: 8.7/10
+- Relevant coursework and systems foundations
 
 ### 💼 Experience
-- Backend Engineer at Bricks Education
-- Freelance Shopify Developer
-- Key responsibilities and achievements
+- SDE Intern at Neeto (BigBinary)
+- Founding Backend Engineer at Bricks Education
+- Backend ownership, QA automation, CI/CD pipelines, and product delivery
 
 ### 🚀 Projects
-- **Bricks LMS** - Learning Management System
-- **Studi.io** - Real-time Collaborative Platform
-- **devStreak** - Open-Source Activity Tracker
+- **NitroSense Linux** - Rust desktop app for Linux thermal monitoring and fan/power control
+- **Namora Food Delivery Platform** - Spring Boot microservices with Kafka, Redis GEO, Eureka, API Gateway, and JWT RBAC
+- **Studi.io** - Real-time collaborative study platform
+- **DocBuddy** - Full-stack RAG document chat application
+- **Anvil** - Multi-writer relational database prototype with CRDT sync
 
 ### 🛠️ Skills
-- Programming Languages: Java, JavaScript, TypeScript, Python
-- Backend: Spring Boot, Node.js, Express.js
-- Frontend: React, Next.js, Tailwind CSS
-- Databases: MySQL, MongoDB, PostgreSQL
-- Tools & DevOps: Git, Maven, Docker, Cloud platforms
+- Programming Languages: Java, TypeScript, JavaScript, Python, Rust, C++
+- Backend: Spring Boot, Node.js, Express.js, REST APIs, JWT, microservices
+- Frontend: React, Next.js, Redux Toolkit, Tailwind CSS
+- Databases: MySQL, PostgreSQL, MongoDB, Redis
+- Tools & DevOps: Git, Docker, GCP, CI/CD, Playwright, JMeter, Postman
 ---
 
 ## 📧 Contact
@@ -205,8 +207,8 @@ Push to the `main` branch and GitHub Actions will automatically build and deploy
 
 - 🌐 Website: [vimalyadavkr.me](https://vimalyadavkr.me)
 - 📧 Email: [vimalyadavkr001@gmail.com](mailto:vimalyadavkr001@gmail.com)
-- 💼 LinkedIn: [Vimal Kumar Yadav](https://www.linkedin.com/in/vimalyadavkr)
-- 🐱 GitHub: [@yamiSukehiro2907](https://github.com/yamiSukehiro2907)
+- 💼 LinkedIn: [Vimal Kumar Yadav](https://www.linkedin.com/in/vimal-kumar-yadav-58a7a5316/)
+- 🐱 GitHub: [@vimalyad](https://github.com/vimalyad)
 - 📱 Phone: +91 8604732097
 
 ---
