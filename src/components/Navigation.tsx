@@ -17,15 +17,6 @@ const Navigation = ({onCommandOpen}: NavigationProps) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Education", href: "#education" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Skills", href: "#skills" },
-  ];
-
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -40,22 +31,10 @@ const Navigation = ({onCommandOpen}: NavigationProps) => {
             vimalyadavkr<span className="text-gradient">.me</span>
           </a>
           
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                {item.name}
-              </a>
-            ))}
-          </div>
-
           <button
             type="button"
             onClick={onCommandOpen}
-            className="ml-4 inline-flex h-10 items-center gap-2 rounded-md border border-border bg-secondary/70 px-3 text-sm text-muted-foreground transition-colors hover:border-primary/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-secondary/70 px-3 text-sm text-muted-foreground transition-colors hover:border-primary/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Open command palette"
           >
             <Search size={16}/>
