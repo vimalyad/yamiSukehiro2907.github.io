@@ -1,6 +1,6 @@
 import {motion} from "framer-motion";
 import {useState} from "react";
-import {Activity, Github, Linkedin, Mail, Phone, Server, Terminal, Zap} from "lucide-react";
+import {Activity, Github, Linkedin, Server, Terminal, Zap} from "lucide-react";
 import {Button} from "@/components/ui/button";
 
 const Hero = () => {
@@ -9,8 +9,6 @@ const Hero = () => {
     const socialLinks = [
         {icon: Github, href: "https://github.com/vimalyad", label: "GitHub"},
         {icon: Linkedin, href: "https://www.linkedin.com/in/vimal-kumar-yadav-58a7a5316/", label: "LinkedIn"},
-        {icon: Mail, href: "mailto:vimalyadavkr001@gmail.com", label: "Email"},
-        {icon: Phone, href: "tel:+918604732097", label: "Phone"},
     ];
 
     const terminalCommands = [
@@ -39,15 +37,6 @@ const Hero = () => {
                 "NitroSense: Rust/Linux fan and thermal control app.",
                 "Namora: 8-service Spring Boot food-delivery platform.",
                 "DocBuddy: full-stack RAG document chat workflow.",
-            ],
-        },
-        {
-            command: "contact --open",
-            label: "Contact",
-            output: [
-                "Email: vimalyadavkr001@gmail.com",
-                "GitHub: github.com/vimalyad",
-                "Location: Bengaluru, Karnataka",
             ],
         },
     ];
@@ -92,10 +81,6 @@ const Hero = () => {
                                 <div className="flex flex-wrap gap-3 lg:justify-end">
                                     <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
                                         <a href="#projects">View Projects</a>
-                                    </Button>
-                                    <Button size="sm" variant="outline"
-                                            className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
-                                        <a href="tel:+918604732097">Contact</a>
                                     </Button>
                                 </div>
                             </div>

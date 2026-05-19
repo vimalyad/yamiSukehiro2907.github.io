@@ -7,8 +7,8 @@ const mapWidth = 640;
 const mapHeight = 360;
 const centerX = mapWidth / 2;
 const centerY = mapHeight / 2;
-const skillNodeWidth = 132;
-const skillNodeHeight = 42;
+const skillNodeWidth = 144;
+const skillNodeHeight = 46;
 
 const getCirclePositions = (count: number, radius: number) =>
     Array.from({length: count}, (_, index) => {
@@ -28,10 +28,7 @@ type SkillCategory = {
 
 const SkillNetwork = ({category}: {category: SkillCategory}) => {
     const Icon = category.icon;
-    const positions = getCirclePositions(category.skills.length, 134).map((position) => ({
-        x: position.x - skillNodeWidth / 2,
-        y: position.y - skillNodeHeight / 2,
-    }));
+    const positions = getCirclePositions(category.skills.length, 132);
 
     return (
         <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[21rem]">
@@ -42,8 +39,8 @@ const SkillNetwork = ({category}: {category: SkillCategory}) => {
                             key={skill}
                             x1={centerX}
                             y1={centerY}
-                            x2={positions[skillIndex].x + skillNodeWidth / 2}
-                            y2={positions[skillIndex].y + skillNodeHeight / 2}
+                            x2={positions[skillIndex].x}
+                            y2={positions[skillIndex].y}
                             stroke="hsl(var(--primary))"
                             strokeWidth="1.6"
                             strokeDasharray="6 10"
@@ -67,10 +64,11 @@ const SkillNetwork = ({category}: {category: SkillCategory}) => {
                     <div
                         key={skill}
                         style={{
-                            left: positions[skillIndex].x,
-                            top: positions[skillIndex].y,
+                            left: `${(positions[skillIndex].x / mapWidth) * 100}%`,
+                            top: `${(positions[skillIndex].y / mapHeight) * 100}%`,
                             width: skillNodeWidth,
                             height: skillNodeHeight,
+                            transform: "translate(-50%, -50%)",
                         }}
                         className="overflow-hidden rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold leading-tight text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground lg:absolute lg:flex lg:items-center lg:justify-center"
                     >

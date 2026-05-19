@@ -14,11 +14,11 @@ const projectNodeHeight = 82;
 const getProjectPositions = (count: number) =>
     Array.from({length: count}, (_, index) => {
         const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
-        const radius = 212;
+        const radius = 235;
 
         return {
-            x: projectCenterX + Math.cos(angle) * radius - projectNodeWidth / 2,
-            y: projectCenterY + Math.sin(angle) * radius - projectNodeHeight / 2,
+            x: projectCenterX + Math.cos(angle) * radius,
+            y: projectCenterY + Math.sin(angle) * radius,
         };
     });
 
@@ -150,8 +150,8 @@ const Projects = () => {
                                                 key={project.id}
                                                 x1={projectCenterX}
                                                 y1={projectCenterY}
-                                                x2={nodePositions[index].x + projectNodeWidth / 2}
-                                                y2={nodePositions[index].y + projectNodeHeight / 2}
+                                                x2={nodePositions[index].x}
+                                                y2={nodePositions[index].y}
                                                 stroke="hsl(var(--primary))"
                                                 strokeWidth="2"
                                                 strokeDasharray="8 10"
@@ -181,10 +181,11 @@ const Projects = () => {
                                                 type="button"
                                                 onClick={() => setSelectedProjectId(project.id)}
                                                 style={{
-                                                    left: nodePositions[index].x,
-                                                    top: nodePositions[index].y,
+                                                    left: `${(nodePositions[index].x / projectMapWidth) * 100}%`,
+                                                    top: `${(nodePositions[index].y / projectMapHeight) * 100}%`,
                                                     width: projectNodeWidth,
                                                     minHeight: projectNodeHeight,
+                                                    transform: "translate(-50%, -50%)",
                                                 }}
                                                 className={`group rounded-lg border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute ${
                                                     isSelected
@@ -198,8 +199,8 @@ const Projects = () => {
                                                     }`}>
                                                         <Icon size={20}/>
                                                     </div>
-                                                    <div className="min-w-0">
-                                                        <h4 className="font-bold">{project.shortTitle}</h4>
+                                                    <div className="min-w-0 flex-1">
+                                                        <h4 className="truncate font-bold">{project.shortTitle}</h4>
                                                         <p className={`mt-1 text-xs ${
                                                             isSelected ? "text-primary-foreground/80" : "text-muted-foreground"
                                                         }`}>

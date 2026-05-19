@@ -7,7 +7,7 @@ import {
     CommandList,
     CommandShortcut,
 } from "@/components/ui/command";
-import {Briefcase, Code2, Download, Github, GraduationCap, Mail, Terminal, User} from "lucide-react";
+import {Briefcase, Code2, Download, Github, GraduationCap, Terminal, User} from "lucide-react";
 
 type CommandPaletteProps = {
     open: boolean;
@@ -27,18 +27,6 @@ const CommandPalette = ({open, onOpenChange}: CommandPaletteProps) => {
         window.open(url, "_blank", "noopener,noreferrer");
     };
 
-    const openEmail = () => {
-        close();
-        window.location.href = "mailto:vimalyadavkr001@gmail.com";
-    };
-
-    const copyEmail = async () => {
-        if (navigator.clipboard) {
-            await navigator.clipboard.writeText("vimalyadavkr001@gmail.com");
-        }
-        close();
-    };
-
     const commands = [
         {
             group: "Navigate",
@@ -55,8 +43,6 @@ const CommandPalette = ({open, onOpenChange}: CommandPaletteProps) => {
             items: [
                 {label: "Resume", shortcut: "PDF", icon: Download, action: () => openUrl("/resume.pdf")},
                 {label: "GitHub", shortcut: "vimalyad", icon: Github, action: () => openUrl("https://github.com/vimalyad")},
-                {label: "Email Vimal", shortcut: "mailto", icon: Mail, action: openEmail},
-                {label: "Copy Email", shortcut: "copy", icon: Mail, action: copyEmail},
             ],
         },
     ];
