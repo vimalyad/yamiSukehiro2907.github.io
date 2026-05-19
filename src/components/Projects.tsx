@@ -107,11 +107,11 @@ const Projects = () => {
     const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
     const SelectedIcon = selectedProject.icon;
     const nodePositions = [
-        "lg:left-[8%] lg:top-[12%]",
-        "lg:left-[6%] lg:bottom-[16%]",
-        "lg:left-1/2 lg:top-[6%] lg:-translate-x-1/2",
-        "lg:right-[8%] lg:top-[12%]",
-        "lg:right-[6%] lg:bottom-[16%]",
+        "lg:left-[7%] lg:top-[16%]",
+        "lg:left-[11%] lg:bottom-[12%]",
+        "lg:left-1/2 lg:top-[5%] lg:-translate-x-1/2",
+        "lg:right-[7%] lg:top-[16%]",
+        "lg:right-[11%] lg:bottom-[12%]",
     ];
 
     return (
@@ -137,28 +137,27 @@ const Projects = () => {
                     </div>
 
                     <div className="relative -mx-6 border-y border-border bg-card/35 px-6 py-8 lg:-mx-10 lg:px-10">
-                        <div className="mx-auto grid max-w-7xl gap-8 xl:grid-cols-[1fr_0.78fr]">
-                            <div className="relative min-h-[34rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5">
+                        <div className="mx-auto max-w-7xl">
+                            <div className="relative min-h-[42rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5 lg:min-h-[36rem]">
                                 <div className="pointer-events-none absolute inset-0 hidden lg:block">
                                     <svg className="h-full w-full" viewBox="0 0 1000 560" preserveAspectRatio="none">
-                                        <path d="M500 280 L190 130" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.45"/>
-                                        <path d="M500 280 L170 420" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.45"/>
-                                        <path d="M500 280 L500 95" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.45"/>
-                                        <path d="M500 280 L810 130" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.45"/>
-                                        <path d="M500 280 L830 420" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.45"/>
+                                        <circle cx="500" cy="280" r="168" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="7 12" fill="none" opacity="0.28"/>
+                                        <path d="M500 280 L175 132" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
+                                        <path d="M500 280 L205 434" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
+                                        <path d="M500 280 L500 84" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
+                                        <path d="M500 280 L825 132" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
+                                        <path d="M500 280 L795 434" stroke="hsl(var(--primary))" strokeWidth="2" strokeDasharray="8 10" opacity="0.42"/>
                                     </svg>
                                 </div>
 
-                                <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[30rem]">
-                                    <div className="mx-auto flex min-h-44 w-full max-w-sm items-center justify-center rounded-lg border border-primary/40 bg-primary/10 p-6 text-center shadow-2xl shadow-primary/10 lg:absolute lg:left-1/2 lg:top-1/2 lg:min-h-52 lg:-translate-x-1/2 lg:-translate-y-1/2">
+                                <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[32rem]">
+                                    <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-full border border-primary/40 bg-primary/10 p-6 text-center shadow-2xl shadow-primary/10 lg:absolute lg:left-1/2 lg:top-1/2 lg:h-48 lg:w-48 lg:-translate-x-1/2 lg:-translate-y-1/2">
                                         <div>
-                                            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
                                                 <Network size={26}/>
                                             </div>
-                                            <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                                                Systems Lab
-                                            </p>
-                                            <p className="mt-2 text-2xl font-bold">Backend-heavy product engineering</p>
+                                            <p className="text-sm font-semibold uppercase tracking-wider text-primary">Systems Lab</p>
+                                            <p className="mt-1 text-3xl font-bold">Projects</p>
                                         </div>
                                     </div>
 
@@ -171,7 +170,7 @@ const Projects = () => {
                                                 key={project.id}
                                                 type="button"
                                                 onClick={() => setSelectedProjectId(project.id)}
-                                                className={`group rounded-lg border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute lg:w-56 ${nodePositions[index]} ${
+                                                className={`group rounded-lg border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute lg:w-60 ${nodePositions[index]} ${
                                                     isSelected
                                                         ? "border-primary bg-primary text-primary-foreground shadow-xl shadow-primary/20"
                                                         : "border-border bg-card/95 hover:border-primary/70 hover:bg-secondary"
@@ -203,51 +202,57 @@ const Projects = () => {
                                 initial={{opacity: 0, y: 12}}
                                 animate={{opacity: 1, y: 0}}
                                 transition={{duration: 0.25}}
-                                className="rounded-lg border border-primary/20 bg-background/80 p-6 xl:self-center"
+                                className="mt-6 rounded-lg border border-primary/20 bg-background/80 p-6"
                             >
-                                <div className="mb-4 flex items-center gap-3">
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                                        <SelectedIcon size={24}/>
-                                    </div>
+                                <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
                                     <div>
-                                        <p className="text-sm font-semibold text-primary">{selectedProject.role}</p>
-                                        <h3 className="text-2xl font-bold">{selectedProject.title}</h3>
+                                        <div className="mb-4 flex items-center gap-3">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                                <SelectedIcon size={24}/>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-semibold text-primary">{selectedProject.role}</p>
+                                                <h3 className="text-2xl font-bold">{selectedProject.title}</h3>
+                                            </div>
+                                        </div>
+
+                                        <p className="mb-2 text-sm font-semibold text-primary">
+                                            {selectedProject.period}
+                                        </p>
+                                        <p className="text-sm leading-relaxed text-muted-foreground">
+                                            {selectedProject.tech}
+                                        </p>
                                     </div>
-                                </div>
 
-                                <p className="mb-2 text-sm font-semibold text-primary">
-                                    {selectedProject.period}
-                                </p>
-                                <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
-                                    {selectedProject.tech}
-                                </p>
+                                    <div>
+                                        <ul className="space-y-3">
+                                            {selectedProject.description.map((item) => (
+                                                <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                                                    <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary"/>
+                                                    {item}
+                                                </li>
+                                            ))}
+                                        </ul>
 
-                                <ul className="space-y-3">
-                                    {selectedProject.description.map((item) => (
-                                        <li key={item} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
-                                            <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary"/>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <div className="mt-6 flex flex-wrap gap-3">
-                                    {selectedProject.links.github && (
-                                        <Button variant="outline" size="sm" asChild>
-                                            <a href={selectedProject.links.github} target="_blank" rel="noopener noreferrer">
-                                                <Github size={16} className="mr-2"/>
-                                                GitHub
-                                            </a>
-                                        </Button>
-                                    )}
-                                    {selectedProject.links.demo && (
-                                        <Button size="sm" className="bg-primary hover:bg-primary/90" asChild>
-                                            <a href={selectedProject.links.demo} target="_blank" rel="noopener noreferrer">
-                                                <ExternalLink size={16} className="mr-2"/>
-                                                Demo
-                                            </a>
-                                        </Button>
-                                    )}
+                                        <div className="mt-6 flex flex-wrap gap-3">
+                                            {selectedProject.links.github && (
+                                                <Button variant="outline" size="sm" asChild>
+                                                    <a href={selectedProject.links.github} target="_blank" rel="noopener noreferrer">
+                                                        <Github size={16} className="mr-2"/>
+                                                        GitHub
+                                                    </a>
+                                                </Button>
+                                            )}
+                                            {selectedProject.links.demo && (
+                                                <Button size="sm" className="bg-primary hover:bg-primary/90" asChild>
+                                                    <a href={selectedProject.links.demo} target="_blank" rel="noopener noreferrer">
+                                                        <ExternalLink size={16} className="mr-2"/>
+                                                        Demo
+                                                    </a>
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </motion.div>
                         </div>
