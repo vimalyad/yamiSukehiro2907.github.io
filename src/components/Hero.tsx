@@ -1,9 +1,12 @@
 import {motion} from "framer-motion";
-import {Github, Linkedin, Mail, Phone, ChevronDown} from "lucide-react";
+import {useState} from "react";
+import {Github, Linkedin, Mail, Phone, ChevronDown, Terminal} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import developerHero from "@/assets/developer-hero.png";
 
 const Hero = () => {
+    const [activeCommand, setActiveCommand] = useState("whoami");
+
     const socialLinks = [
         {icon: Github, href: "https://github.com/vimalyad", label: "GitHub"},
         {icon: Linkedin, href: "https://www.linkedin.com/in/vimal-kumar-yadav-58a7a5316/", label: "LinkedIn"},
@@ -11,10 +14,51 @@ const Hero = () => {
         {icon: Phone, href: "tel:+918604732097", label: "Phone"},
     ];
 
+    const terminalCommands = [
+        {
+            command: "whoami",
+            label: "Profile",
+            output: [
+                "Vimal Kumar Yadav",
+                "Backend engineer building production systems from 0 to 1.",
+                "Focus: microservices, real-time systems, automation, and clean product delivery.",
+            ],
+        },
+        {
+            command: "stack --top",
+            label: "Stack",
+            output: [
+                "Java · Spring Boot · Kafka · Redis · PostgreSQL",
+                "TypeScript · React · Socket.IO · Playwright",
+                "Rust · Linux systems · Docker · GCP · CI/CD",
+            ],
+        },
+        {
+            command: "projects --featured",
+            label: "Projects",
+            output: [
+                "NitroSense: Rust/Linux fan and thermal control app.",
+                "Namora: 8-service Spring Boot food-delivery platform.",
+                "DocBuddy: full-stack RAG document chat workflow.",
+            ],
+        },
+        {
+            command: "contact --open",
+            label: "Contact",
+            output: [
+                "Email: vimalyadavkr001@gmail.com",
+                "GitHub: github.com/vimalyad",
+                "Location: Bengaluru, Karnataka",
+            ],
+        },
+    ];
+
+    const activeTerminal = terminalCommands.find((item) => item.command === activeCommand) ?? terminalCommands[0];
+
     return (
         <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
             <div className="container mx-auto px-6 py-32">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="grid lg:grid-cols-[1fr_0.95fr] gap-12 items-center">
                     <motion.div
                         initial={{opacity: 0, x: -50}}
                         animate={{opacity: 1, x: 0}}
@@ -56,6 +100,73 @@ const Hero = () => {
                                 </motion.a>
                             ))}
                         </div>
+
+                        <motion.div
+                            initial={{opacity: 0, y: 24}}
+                            animate={{opacity: 1, y: 0}}
+                            transition={{duration: 0.6, delay: 0.25}}
+                            className="mt-10 max-w-2xl rounded-lg border border-primary/25 bg-card/80 shadow-2xl shadow-primary/10 backdrop-blur"
+                        >
+                            <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                                    <Terminal size={16} className="text-primary"/>
+                                    vimal.dev
+                                </div>
+                                <div className="flex gap-1.5">
+                                    <span className="h-2.5 w-2.5 rounded-full bg-red-400/80"/>
+                                    <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80"/>
+                                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80"/>
+                                </div>
+                            </div>
+
+                            <div className="p-4">
+                                <div className="mb-4 flex flex-wrap gap-2">
+                                    {terminalCommands.map((item) => (
+                                        <button
+                                            key={item.command}
+                                            type="button"
+                                            onClick={() => setActiveCommand(item.command)}
+                                            className={`rounded-md border px-3 py-2 text-xs font-semibold transition-all ${
+                                                activeCommand === item.command
+                                                    ? "border-primary bg-primary text-primary-foreground"
+                                                    : "border-border bg-secondary/70 text-muted-foreground hover:border-primary/70 hover:text-foreground"
+                                            }`}
+                                        >
+                                            {item.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="rounded-md bg-background/80 p-4 font-mono text-sm">
+                                    <div className="mb-3 flex items-center gap-2 text-primary">
+                                        <span>$</span>
+                                        <motion.span
+                                            key={activeTerminal.command}
+                                            initial={{opacity: 0}}
+                                            animate={{opacity: 1}}
+                                            transition={{duration: 0.2}}
+                                        >
+                                            {activeTerminal.command}
+                                        </motion.span>
+                                        <span className="h-4 w-2 animate-pulse bg-primary"/>
+                                    </div>
+                                    <motion.div
+                                        key={`${activeTerminal.command}-output`}
+                                        initial={{opacity: 0, y: 8}}
+                                        animate={{opacity: 1, y: 0}}
+                                        transition={{duration: 0.25}}
+                                        className="space-y-2 text-left"
+                                    >
+                                        {activeTerminal.output.map((line) => (
+                                            <p key={line} className="text-muted-foreground">
+                                                <span className="mr-2 text-primary/80">&gt;</span>
+                                                {line}
+                                            </p>
+                                        ))}
+                                    </motion.div>
+                                </div>
+                            </div>
+                        </motion.div>
                     </motion.div>
 
                     <motion.div
