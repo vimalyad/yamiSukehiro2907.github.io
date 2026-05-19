@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import {Search} from "lucide-react";
 
-const Navigation = () => {
+type NavigationProps = {
+  onCommandOpen: () => void;
+};
+
+const Navigation = ({onCommandOpen}: NavigationProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -46,6 +51,16 @@ const Navigation = () => {
               </a>
             ))}
           </div>
+
+          <button
+            type="button"
+            onClick={onCommandOpen}
+            className="ml-4 inline-flex h-10 items-center gap-2 rounded-md border border-border bg-secondary/70 px-3 text-sm text-muted-foreground transition-colors hover:border-primary/70 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label="Open command palette"
+          >
+            <Search size={16}/>
+            <span className="hidden sm:inline">Ctrl K</span>
+          </button>
         </div>
       </div>
     </motion.nav>
