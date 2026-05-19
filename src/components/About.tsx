@@ -1,8 +1,129 @@
 import image from "@/assets/photo.jpg";
-import {motion} from "framer-motion";
+import {motion, useMotionValue, useTransform} from "framer-motion";
 import {useInView} from "framer-motion";
 import {useRef} from "react";
 import {GitBranch, Rocket, ShieldCheck, Workflow} from "lucide-react";
+
+const flow = [
+    "Problem",
+    "API Boundary",
+    "Data Model",
+    "Async Flow",
+    "Observability",
+    "Ship",
+];
+
+const nodePositions = [
+    {left: 18, top: 96},
+    {left: 144, top: 34},
+    {left: 286, top: 110},
+    {left: 426, top: 52},
+    {left: 568, top: 128},
+    {left: 710, top: 68},
+];
+
+const nodeWidth = 126;
+const nodeHeight = 70;
+
+type FlowNodeMotion = {
+    x: ReturnType<typeof useMotionValue<number>>;
+    y: ReturnType<typeof useMotionValue<number>>;
+};
+
+const BuildFlowMap = () => {
+    const constraintsRef = useRef<HTMLDivElement>(null);
+    const nodes: FlowNodeMotion[] = [
+        {x: useMotionValue(0), y: useMotionValue(0)},
+        {x: useMotionValue(0), y: useMotionValue(0)},
+        {x: useMotionValue(0), y: useMotionValue(0)},
+        {x: useMotionValue(0), y: useMotionValue(0)},
+        {x: useMotionValue(0), y: useMotionValue(0)},
+        {x: useMotionValue(0), y: useMotionValue(0)},
+    ];
+
+    const edgePoints = [
+        {
+            x: useTransform(nodes[0].x, (value) => nodePositions[0].left + nodeWidth / 2 + value),
+            y: useTransform(nodes[0].y, (value) => nodePositions[0].top + nodeHeight / 2 + value),
+        },
+        {
+            x: useTransform(nodes[1].x, (value) => nodePositions[1].left + nodeWidth / 2 + value),
+            y: useTransform(nodes[1].y, (value) => nodePositions[1].top + nodeHeight / 2 + value),
+        },
+        {
+            x: useTransform(nodes[2].x, (value) => nodePositions[2].left + nodeWidth / 2 + value),
+            y: useTransform(nodes[2].y, (value) => nodePositions[2].top + nodeHeight / 2 + value),
+        },
+        {
+            x: useTransform(nodes[3].x, (value) => nodePositions[3].left + nodeWidth / 2 + value),
+            y: useTransform(nodes[3].y, (value) => nodePositions[3].top + nodeHeight / 2 + value),
+        },
+        {
+            x: useTransform(nodes[4].x, (value) => nodePositions[4].left + nodeWidth / 2 + value),
+            y: useTransform(nodes[4].y, (value) => nodePositions[4].top + nodeHeight / 2 + value),
+        },
+        {
+            x: useTransform(nodes[5].x, (value) => nodePositions[5].left + nodeWidth / 2 + value),
+            y: useTransform(nodes[5].y, (value) => nodePositions[5].top + nodeHeight / 2 + value),
+        },
+    ];
+
+    return (
+        <>
+            <div ref={constraintsRef} className="relative hidden h-64 overflow-hidden rounded-lg border border-primary/20 bg-card/40 shadow-inner shadow-primary/5 md:block">
+                <motion.svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 860 256" preserveAspectRatio="none">
+                    {edgePoints.slice(0, -1).map((point, index) => (
+                        <motion.line
+                            key={`${flow[index]}-${flow[index + 1]}`}
+                            x1={point.x}
+                            y1={point.y}
+                            x2={edgePoints[index + 1].x}
+                            y2={edgePoints[index + 1].y}
+                            stroke="hsl(var(--primary))"
+                            strokeWidth="2"
+                            strokeDasharray="8 10"
+                            opacity="0.72"
+                        />
+                    ))}
+                </motion.svg>
+
+                {flow.map((step, index) => (
+                    <motion.button
+                        key={step}
+                        type="button"
+                        drag
+                        dragMomentum={false}
+                        dragElastic={0.08}
+                        dragConstraints={constraintsRef}
+                        style={{
+                            x: nodes[index].x,
+                            y: nodes[index].y,
+                            left: nodePositions[index].left,
+                            top: nodePositions[index].top,
+                            width: nodeWidth,
+                            height: nodeHeight,
+                        }}
+                        whileDrag={{scale: 1.04, zIndex: 20}}
+                        className="absolute cursor-grab rounded-lg border border-primary/30 bg-background/95 px-3 py-3 text-left text-sm font-semibold shadow-xl shadow-primary/10 transition-colors active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        aria-label={`Drag build flow node ${step}`}
+                    >
+                        <span className="block text-xs font-bold text-primary">{String(index + 1).padStart(2, "0")}</span>
+                        <span className="mt-1 block leading-tight">{step}</span>
+                    </motion.button>
+                ))}
+            </div>
+
+            <div className="grid gap-3 md:hidden">
+                {flow.map((step, index) => (
+                    <div key={step} className="relative rounded-md border border-border bg-card px-3 py-3 text-sm font-semibold">
+                        <span className="mr-2 text-primary">{String(index + 1).padStart(2, "0")}</span>
+                        {step}
+                    </div>
+                ))}
+            </div>
+        </>
+    );
+};
 
 const About = () => {
     const ref = useRef(null);
@@ -29,21 +150,12 @@ const About = () => {
         },
     ];
 
-    const flow = [
-        "Problem",
-        "API Boundary",
-        "Data Model",
-        "Async Flow",
-        "Observability",
-        "Ship",
-    ];
-
     return (
         <section id="about" className="relative overflow-hidden py-24">
-            <div className="pointer-events-none absolute inset-0 opacity-[0.08]">
+            <div className="pointer-events-none absolute inset-0 opacity-[0.14]">
                 <svg className="h-full w-full" viewBox="0 0 1200 520" preserveAspectRatio="none">
-                    <path d="M72 420 C260 250 360 455 520 270 S820 120 1110 280" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" strokeDasharray="10 14"/>
-                    <path d="M120 120 H380 V210 H610 V130 H1040" stroke="hsl(var(--primary))" strokeWidth="2" fill="none" strokeDasharray="8 12"/>
+                    <path d="M72 420 C260 250 360 455 520 270 S820 120 1110 280" stroke="hsl(var(--primary))" strokeWidth="2.5" fill="none" strokeDasharray="10 14"/>
+                    <path d="M120 120 H380 V210 H610 V130 H1040" stroke="hsl(var(--primary))" strokeWidth="2.5" fill="none" strokeDasharray="8 12"/>
                     <circle cx="380" cy="210" r="12" fill="hsl(var(--primary))"/>
                     <circle cx="610" cy="130" r="12" fill="hsl(var(--primary))"/>
                     <circle cx="880" cy="312" r="12" fill="hsl(var(--primary))"/>
@@ -75,7 +187,7 @@ const About = () => {
                                 <img
                                     src={image}
                                     alt="Vimal Kumar Yadav"
-                                    className="aspect-square w-full rounded-lg border border-border object-cover"
+                                    className="aspect-square w-full rounded-lg border border-border object-cover object-top"
                                 />
                                 <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
                                     <div className="rounded-md bg-secondary p-3">
@@ -142,14 +254,7 @@ const About = () => {
                                         <p className="text-sm text-muted-foreground">How I usually turn ambiguity into shipped systems</p>
                                     </div>
                                 </div>
-                                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
-                                    {flow.map((step, index) => (
-                                        <div key={step} className="relative rounded-md border border-border bg-card px-3 py-3 text-sm font-semibold">
-                                            <span className="mr-2 text-primary">{String(index + 1).padStart(2, "0")}</span>
-                                            {step}
-                                        </div>
-                                    ))}
-                                </div>
+                                <BuildFlowMap/>
                             </div>
                         </motion.div>
                     </div>
