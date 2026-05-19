@@ -1,4 +1,4 @@
-import {motion, useMotionValue, useTransform} from "framer-motion";
+import {motion} from "framer-motion";
 import {useInView} from "framer-motion";
 import {useRef, useState} from "react";
 import {Button} from "@/components/ui/button";
@@ -22,24 +22,8 @@ const getProjectPositions = (count: number) =>
         };
     });
 
-const useProjectNodeMotion = () => ({
-    x: useMotionValue(0),
-    y: useMotionValue(0),
-});
-
-type ProjectNodeMotion = ReturnType<typeof useProjectNodeMotion>;
-
-const useProjectNodePoint = (
-    node: ProjectNodeMotion,
-    position: {x: number; y: number},
-) => ({
-    x: useTransform(node.x, (value) => position.x + projectNodeWidth / 2 + value),
-    y: useTransform(node.y, (value) => position.y + projectNodeHeight / 2 + value),
-});
-
 const Projects = () => {
     const ref = useRef(null);
-    const mapConstraintsRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, {once: true});
     const [selectedProjectId, setSelectedProjectId] = useState("namora");
 
@@ -141,20 +125,6 @@ const Projects = () => {
     const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? projects[0];
     const SelectedIcon = selectedProject.icon;
     const nodePositions = getProjectPositions(projects.length);
-    const projectNodes = [
-        useProjectNodeMotion(),
-        useProjectNodeMotion(),
-        useProjectNodeMotion(),
-        useProjectNodeMotion(),
-        useProjectNodeMotion(),
-    ];
-    const edgePoints = [
-        useProjectNodePoint(projectNodes[0], nodePositions[0]),
-        useProjectNodePoint(projectNodes[1], nodePositions[1]),
-        useProjectNodePoint(projectNodes[2], nodePositions[2]),
-        useProjectNodePoint(projectNodes[3], nodePositions[3]),
-        useProjectNodePoint(projectNodes[4], nodePositions[4]),
-    ];
 
     return (
         <section id="projects" className="py-24 overflow-hidden">
@@ -174,28 +144,27 @@ const Projects = () => {
                     <div className="mx-auto max-w-7xl">
                         <div className="relative min-h-[42rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5 lg:min-h-[36rem]">
                                 <div className="pointer-events-none absolute inset-0 hidden lg:block">
-                                    <motion.svg className="h-full w-full overflow-visible" viewBox={`0 0 ${projectMapWidth} ${projectMapHeight}`} preserveAspectRatio="none">
-                                        <circle cx="500" cy="280" r="168" stroke="hsl(var(--primary))" strokeWidth="1.5" strokeDasharray="7 12" fill="none" opacity="0.28"/>
+                                    <svg className="h-full w-full overflow-visible" viewBox={`0 0 ${projectMapWidth} ${projectMapHeight}`} preserveAspectRatio="none">
                                         {projects.map((project, index) => (
-                                            <motion.line
+                                            <line
                                                 key={project.id}
                                                 x1={projectCenterX}
                                                 y1={projectCenterY}
-                                                x2={edgePoints[index].x}
-                                                y2={edgePoints[index].y}
+                                                x2={nodePositions[index].x + projectNodeWidth / 2}
+                                                y2={nodePositions[index].y + projectNodeHeight / 2}
                                                 stroke="hsl(var(--primary))"
                                                 strokeWidth="2"
                                                 strokeDasharray="8 10"
                                                 opacity="0.48"
                                             />
                                         ))}
-                                    </motion.svg>
+                                    </svg>
                                 </div>
 
-                                <div ref={mapConstraintsRef} className="relative z-10 flex flex-col gap-4 lg:block lg:h-[32rem]">
-                                    <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-full border border-primary/40 bg-primary/10 p-6 text-center shadow-2xl shadow-primary/10 lg:absolute lg:left-1/2 lg:top-1/2 lg:h-48 lg:w-48 lg:-translate-x-1/2 lg:-translate-y-1/2">
+                                <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[32rem]">
+                                    <div className="mx-auto flex h-44 w-44 items-center justify-center rounded-full border border-primary bg-primary p-6 text-center text-primary-foreground shadow-2xl shadow-primary/30 lg:absolute lg:left-1/2 lg:top-1/2 lg:z-10 lg:h-48 lg:w-48 lg:-translate-x-1/2 lg:-translate-y-1/2">
                                         <div>
-                                            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-background/20 text-primary-foreground">
                                                 <Network size={26}/>
                                             </div>
                                             <p className="mt-1 text-3xl font-bold">Projects</p>
@@ -207,24 +176,17 @@ const Projects = () => {
                                         const isSelected = selectedProjectId === project.id;
 
                                         return (
-                                            <motion.button
+                                            <button
                                                 key={project.id}
                                                 type="button"
-                                                drag
-                                                dragMomentum={false}
-                                                dragElastic={0.08}
-                                                dragConstraints={mapConstraintsRef}
                                                 onClick={() => setSelectedProjectId(project.id)}
                                                 style={{
-                                                    x: projectNodes[index].x,
-                                                    y: projectNodes[index].y,
                                                     left: nodePositions[index].x,
                                                     top: nodePositions[index].y,
                                                     width: projectNodeWidth,
                                                     minHeight: projectNodeHeight,
                                                 }}
-                                                whileDrag={{scale: 1.04, zIndex: 20}}
-                                                className={`group cursor-grab rounded-lg border p-4 text-left transition-all active:cursor-grabbing focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute ${
+                                                className={`group rounded-lg border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:absolute ${
                                                     isSelected
                                                         ? "border-primary bg-primary text-primary-foreground shadow-xl shadow-primary/20"
                                                         : "border-border bg-card/95 hover:border-primary/70 hover:bg-secondary"
@@ -236,7 +198,7 @@ const Projects = () => {
                                                     }`}>
                                                         <Icon size={20}/>
                                                     </div>
-                                                    <div>
+                                                    <div className="min-w-0">
                                                         <h4 className="font-bold">{project.shortTitle}</h4>
                                                         <p className={`mt-1 text-xs ${
                                                             isSelected ? "text-primary-foreground/80" : "text-muted-foreground"
@@ -245,7 +207,7 @@ const Projects = () => {
                                                         </p>
                                                     </div>
                                                 </div>
-                                            </motion.button>
+                                            </button>
                                         );
                                     })}
                                 </div>
