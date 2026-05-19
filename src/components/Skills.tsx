@@ -3,27 +3,18 @@ import {useInView} from "framer-motion";
 import {useRef} from "react";
 import {BrainCircuit, Cloud, Code2, Database, GitBranch, MonitorSmartphone, Server, ShieldCheck} from "lucide-react";
 
-const mapWidth = 760;
-const mapHeight = 440;
+const mapWidth = 640;
+const mapHeight = 520;
 const centerX = mapWidth / 2;
 const centerY = mapHeight / 2;
-const skillNodeHeight = 46;
-const skillCircleRadius = 172;
+const skillNodeHeight = 48;
+const graphMargin = 18;
+const nodeGap = 14;
 
 const getSkillNodeWidth = (skill: string) => {
-    const baseWidth = skill.length * 8 + 42;
-    return Math.min(Math.max(baseWidth, 104), 180);
+    const baseWidth = skill.length * 7.8 + 42;
+    return Math.min(Math.max(baseWidth, 104), 176);
 };
-
-const getCirclePositions = (count: number, radius: number) =>
-    Array.from({length: count}, (_, index) => {
-        const angle = -Math.PI / 2 + (index * 2 * Math.PI) / count;
-
-        return {
-            x: centerX + Math.cos(angle) * radius,
-            y: centerY + Math.sin(angle) * radius,
-        };
-    });
 
 type SkillCategory = {
     title: string;
@@ -31,21 +22,120 @@ type SkillCategory = {
     skills: string[];
 };
 
+type SkillNodeLayout = {
+    skill: string;
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+};
+
+const getPositions = (count: number, radius: number, startAngle: number) =>
+    Array.from({length: count}, (_, index) => {
+        const angle = startAngle + (index * 2 * Math.PI) / count;
+        return {
+            x: centerX + Math.cos(angle) * radius,
+            y: centerY + Math.sin(angle) * radius,
+        };
+    });
+
+const isInsideBounds = (nodes: SkillNodeLayout[]) =>
+    nodes.every((node) => (
+        node.x - node.width / 2 >= graphMargin &&
+        node.x + node.width / 2 <= mapWidth - graphMargin &&
+        node.y - node.height / 2 >= graphMargin &&
+        node.y + node.height / 2 <= mapHeight - graphMargin
+    ));
+
+const hasOverlap = (nodes: SkillNodeLayout[]) => {
+    for (let i = 0; i < nodes.length; i += 1) {
+        for (let j = i + 1; j < nodes.length; j += 1) {
+            const first = nodes[i];
+            const second = nodes[j];
+            const overlapsX = Math.abs(first.x - second.x) < (first.width + second.width) / 2 + nodeGap;
+            const overlapsY = Math.abs(first.y - second.y) < (first.height + second.height) / 2 + nodeGap;
+
+            if (overlapsX && overlapsY) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+const getLayoutPenalty = (nodes: SkillNodeLayout[]) => {
+    const overlapPenalty = nodes.reduce((penalty, first, firstIndex) => {
+        const pairPenalty = nodes.slice(firstIndex + 1).reduce((total, second) => {
+            const overlapX = Math.max(0, (first.width + second.width) / 2 + nodeGap - Math.abs(first.x - second.x));
+            const overlapY = Math.max(0, (first.height + second.height) / 2 + nodeGap - Math.abs(first.y - second.y));
+            return total + overlapX * overlapY;
+        }, 0);
+
+        return penalty + pairPenalty;
+    }, 0);
+
+    const boundsPenalty = nodes.reduce((penalty, node) => (
+        penalty +
+        Math.max(0, graphMargin - (node.x - node.width / 2)) +
+        Math.max(0, node.x + node.width / 2 - (mapWidth - graphMargin)) +
+        Math.max(0, graphMargin - (node.y - node.height / 2)) +
+        Math.max(0, node.y + node.height / 2 - (mapHeight - graphMargin))
+    ), 0);
+
+    return overlapPenalty + boundsPenalty * 1000;
+};
+
+const buildSkillLayout = (skills: string[]) => {
+    const nodeSizes = skills.map((skill) => ({
+        skill,
+        width: getSkillNodeWidth(skill),
+        height: skillNodeHeight,
+    }));
+    const step = (2 * Math.PI) / skills.length;
+    const rotations = Array.from({length: 16}, (_, index) => -Math.PI / 2 + (index * step) / 16);
+    let bestLayout: SkillNodeLayout[] | null = null;
+    let bestPenalty = Number.POSITIVE_INFINITY;
+
+    for (let radius = 150; radius <= 238; radius += 4) {
+        for (const rotation of rotations) {
+            const positions = getPositions(skills.length, radius, rotation);
+            const layout = nodeSizes.map((node, index) => ({
+                ...node,
+                x: positions[index].x,
+                y: positions[index].y,
+            }));
+
+            if (isInsideBounds(layout) && !hasOverlap(layout)) {
+                return layout;
+            }
+
+            const penalty = getLayoutPenalty(layout);
+            if (penalty < bestPenalty) {
+                bestLayout = layout;
+                bestPenalty = penalty;
+            }
+        }
+    }
+
+    return bestLayout ?? [];
+};
+
 const SkillNetwork = ({category}: {category: SkillCategory}) => {
     const Icon = category.icon;
-    const positions = getCirclePositions(category.skills.length, skillCircleRadius);
+    const nodes = buildSkillLayout(category.skills);
 
     return (
-        <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[21rem]">
+        <div className="relative z-10 flex flex-col gap-4 lg:block lg:h-[30rem]">
             <div className="pointer-events-none absolute inset-0 hidden lg:block">
                 <svg className="h-full w-full overflow-visible" viewBox={`0 0 ${mapWidth} ${mapHeight}`} preserveAspectRatio="none">
-                    {category.skills.map((skill, skillIndex) => (
+                    {nodes.map((node) => (
                         <line
-                            key={skill}
+                            key={node.skill}
                             x1={centerX}
                             y1={centerY}
-                            x2={positions[skillIndex].x}
-                            y2={positions[skillIndex].y}
+                            x2={node.x}
+                            y2={node.y}
                             stroke="hsl(var(--primary))"
                             strokeWidth="1.6"
                             strokeDasharray="6 10"
@@ -65,25 +155,21 @@ const SkillNetwork = ({category}: {category: SkillCategory}) => {
             </div>
 
             <div className="flex flex-wrap justify-center gap-2 lg:block">
-                {category.skills.map((skill, skillIndex) => {
-                    const nodeWidth = getSkillNodeWidth(skill);
-
-                    return (
-                        <div
-                            key={skill}
-                            style={{
-                                left: `${(positions[skillIndex].x / mapWidth) * 100}%`,
-                                top: `${(positions[skillIndex].y / mapHeight) * 100}%`,
-                                width: nodeWidth,
-                                height: skillNodeHeight,
-                                transform: "translate(-50%, -50%)",
-                            }}
-                            className="overflow-hidden rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold leading-tight text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground lg:absolute lg:flex lg:items-center lg:justify-center"
-                        >
-                            <span className="max-w-full whitespace-normal break-words">{skill}</span>
-                        </div>
-                    );
-                })}
+                {nodes.map((node) => (
+                    <div
+                        key={node.skill}
+                        style={{
+                            left: `${(node.x / mapWidth) * 100}%`,
+                            top: `${(node.y / mapHeight) * 100}%`,
+                            width: node.width,
+                            height: node.height,
+                            transform: "translate(-50%, -50%)",
+                        }}
+                        className="overflow-hidden rounded-full border border-border bg-card px-3 py-2 text-center text-xs font-semibold leading-tight text-muted-foreground shadow-sm transition-colors hover:border-primary/70 hover:text-foreground lg:absolute lg:flex lg:items-center lg:justify-center"
+                    >
+                        <span className="max-w-full whitespace-normal break-words">{node.skill}</span>
+                    </div>
+                ))}
             </div>
         </div>
     );
@@ -167,7 +253,7 @@ const Skills = () => {
                                     initial={{opacity: 0, y: 30}}
                                     animate={isInView ? {opacity: 1, y: 0} : {}}
                                     transition={{duration: 0.6, delay: index * 0.07}}
-                                    className="relative min-h-[28rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5"
+                                    className="relative min-h-[34rem] overflow-hidden rounded-lg border border-border bg-background/70 p-5"
                                 >
                                     <SkillNetwork category={category}/>
                                 </motion.div>
